@@ -1,0 +1,33 @@
+version: '1'
+
+services:
+  postgres:
+    image: postgres:13.0-alpine
+    environment:
+      POSTGRES_DB: dsci644db
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    ports:
+    # Note if you try to open localhost:5432 on your browser, it will not work refer Task_3.md for more details
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+      name: postgres_data
